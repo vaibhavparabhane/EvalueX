@@ -388,44 +388,6 @@ docker-compose down
 
 ---
 
-## 🔌 API Workflow
-
-```mermaid
-sequenceDiagram
-    participant FE as Frontend (React)
-    participant BE as Backend (Express)
-    participant GEM as Gemini AI
-    participant GPT as OpenAI GPT
-    participant DB as Supabase DB
-
-    FE->>BE: POST /api/parse-question-paper (images)
-    BE->>GEM: Extract question structure
-    GEM-->>BE: Structured questions JSON
-    BE->>DB: Store exam_questions
-    BE-->>FE: Questions parsed ✅
-
-    FE->>BE: POST /api/extract-answers (answer sheet images)
-    BE->>GEM: Pass 2A — Layout detection
-    GEM-->>BE: Answer map (question → pages)
-    BE->>GEM: Pass 2B — Extract answer text per question
-    GEM-->>BE: Extracted answer texts
-    BE->>DB: Store submission_answers
-    BE-->>FE: Answers extracted ✅
-
-    FE->>BE: POST /api/grade-submission
-    BE->>DB: Fetch questions + rubrics + model answers
-    BE->>GPT: Grade each question (batched)
-    GPT-->>BE: Score + feedback per question
-    BE->>DB: Store question_grades
-    BE->>BE: Aggregate final score
-    BE->>DB: Update submission score
-    BE-->>FE: Grading complete ✅
-
-    FE->>BE: POST /api/upload-feedback-pdf
-    BE->>DB: Store PDF in Supabase Storage
-    BE-->>FE: PDF URL returned ✅
-```
-
 ### Available API Endpoints
 
 | Method | Endpoint | Description |
