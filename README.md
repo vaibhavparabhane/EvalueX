@@ -87,81 +87,90 @@ The platform is built on a **modular, scalable, and production-ready architectur
 ```
 EvalueX/
 │
-├── 📂 backend/                        # Node.js + Express REST API Server
-│   ├── 📂 routes/                     # API Route Handlers
-│   │   ├── aggregateScores.js         # Score computation & aggregation
-│   │   ├── extractAnswers.js          # 2-pass answer extraction pipeline
-│   │   ├── extractModelAnswersPdf.js  # Model answer PDF extraction
-│   │   ├── extractQuestionsPdf.js     # Question paper PDF extraction
-│   │   ├── extractText.js             # OCR text extraction (backward compat)
-│   │   ├── gradeQuestion.js           # Single question re-grading
-│   │   ├── gradeSubmission.js         # Full submission grading pipeline
-│   │   ├── parseModelAnswers.js       # Model answer parsing
-│   │   ├── parseQuestionPaper.js      # Question paper structure parsing
-│   │   ├── parseRubricPdf.js          # Rubric PDF parsing
-│   │   └── uploadFeedbackPdf.js       # Feedback PDF upload to Supabase
+├── 📂 backend/                              # Node.js + Express REST API Server
 │   │
-│   ├── 📂 services/                   # External Service Integrations
-│   │   ├── geminiService.js           # Google Gemini AI functions
-│   │   ├── openaiService.js           # OpenAI GPT grading functions
-│   │   └── supabaseClient.js          # Supabase service-role client
+│   ├── 📂 routes/                           # API Route Handlers
+│   │   ├── aggregateScores.js               # Score computation & aggregation
+│   │   ├── extractAnswers.js                # 2-pass answer extraction pipeline
+│   │   ├── extractModelAnswersPdf.js        # Model answer PDF extraction
+│   │   ├── extractQuestionsPdf.js           # Question paper PDF extraction
+│   │   ├── extractText.js                   # OCR text extraction (backward compat)
+│   │   ├── gradeQuestion.js                 # Single question re-grading
+│   │   ├── gradeSubmission.js               # Full submission grading pipeline
+│   │   ├── parseModelAnswers.js             # Model answer parsing
+│   │   ├── parseQuestionPaper.js            # Question paper structure parsing
+│   │   ├── parseRubricPdf.js                # Rubric PDF parsing
+│   │   └── uploadFeedbackPdf.js             # Feedback PDF upload to Supabase
 │   │
-│   ├── 📂 supabase/                   # Database Schema
-│   │   └── schema.sql                 # Full database schema (run once on new Supabase project)
+│   ├── 📂 services/                         # External Service Integrations
+│   │   ├── geminiService.js                 # Google Gemini AI functions
+│   │   ├── openaiService.js                 # OpenAI GPT grading functions
+│   │   └── supabaseClient.js                # Supabase service-role client
 │   │
-│   ├── 📂 utils/                      # Shared Utility Functions
-│   │   ├── dbHelpers.js               # Supabase query helpers
-│   │   ├── geminiErrors.js            # Gemini error handling
-│   │   ├── multerUpload.js            # File upload configuration
-│   │   ├── optionalQuestionsRules.js  # Optional question policy logic
-│   │   ├── pdfParser.js               # PDF parsing utilities
-│   │   ├── sanitize.js                # Text sanitization
-│   │   └── scoreAggregator.js         # Score calculation logic
+│   ├── 📂 supabase/                         # Database Schema
+│   │   └── schema.sql                       # Full database schema (run once on new Supabase project)
+│   │
+│   ├── 📂 utils/                            # Shared Utility Functions
+│   │   ├── dbHelpers.js                     # Supabase query helpers
+│   │   ├── geminiErrors.js                  # Gemini error handling
+│   │   ├── multerUpload.js                  # File upload configuration
+│   │   ├── optionalQuestionsRules.js        # Optional question policy logic
+│   │   ├── pdfParser.js                     # PDF parsing utilities
+│   │   ├── sanitize.js                      # Text sanitization
+│   │   └── scoreAggregator.js               # Score calculation logic
 │   │
 │   ├── .dockerignore
-│   ├── .env                           # Environment variables (not committed)
-│   ├── .env.example                   # Environment variable template
+│   ├── .env                                 # Environment variables (not committed)
+│   ├── .env.example                         # Environment variable template
 │   ├── .gitignore
-│   ├── Dockerfile                     # Docker container config
-│   ├── index.js                       # Express app entry point
+│   ├── Dockerfile                           # Docker container config
+│   ├── index.js                             # Express app entry point
 │   ├── package-lock.json
 │   └── package.json
 │
-├── 📂 frontend/                       # React + TypeScript SPA
-│   ├── 📂 public/                     # Static assets
+├── 📂 frontend/                             # React + TypeScript SPA
+│   │
+│   ├── 📂 public/                           # Static assets
 │   │
 │   ├── 📂 src/
 │   │   ├── 📂 components/
-│   │   │   ├── 📂 layout/             # Header, Sidebar, NavLink
-│   │   │   ├── 📂 marketing/          # Landing page components
-│   │   │   └── 📂 ui/                 # Shadcn/Radix UI components
+│   │   │   ├── 📂 layout/                   # Header, Sidebar, NavLink
+│   │   │   ├── 📂 marketing/                # Landing page components
+│   │   │   └── 📂 ui/                       # Shadcn/Radix UI components
 │   │   │
-│   │   ├── 📂 hooks/                  # Custom React hooks
-│   │   │   ├── useAuth.tsx            # Authentication hook
-│   │   │   └── useTheme.tsx           # Theme management hook
+│   │   ├── 📂 hooks/                        # Custom React hooks
+│   │   │   ├── useAuth.tsx                  # Authentication hook
+│   │   │   └── useTheme.tsx                 # Theme management hook
 │   │   │
 │   │   ├── 📂 integrations/
-│   │   │   ├── api-client.ts          # Backend REST API client
-│   │   │   └── 📂 supabase/           # Supabase client & types
+│   │   │   ├── api-client.ts                # Backend REST API client
+│   │   │   └── 📂 supabase/                 # Supabase client & types
 │   │   │
 │   │   ├── 📂 pages/
-│   │   │   ├── 📂 auth/               # Login, Signup
-│   │   │   ├── 📂 dashboard/          # Dashboard, Classes, Assignments, Results, Analytics
-│   │   │   ├── 📂 grading/            # Upload, GradingReview, Rubrics
-│   │   │   ├── 📂 marketing/          # Landing page
-│   │   │   └── 📂 settings/           # User settings
+│   │   │   ├── 📂 auth/                     # Login, Signup
+│   │   │   ├── 📂 dashboard/                # Dashboard, Classes, Assignments, Results, Analytics
+│   │   │   ├── 📂 grading/                  # Upload, GradingReview, Rubrics
+│   │   │   ├── 📂 marketing/                # Landing page
+│   │   │   └── 📂 settings/                 # User settings
 │   │   │
-│   │   ├── 📂 utils/                  # Frontend utilities
-│   │   ├── App.tsx                    # Root component & routing
-│   │   ├── main.tsx                   # React entry point
-│   │   └── index.css                  # Global styles
+│   │   ├── 📂 utils/                        # Frontend utilities
+│   │   ├── App.tsx                          # Root component & routing
+│   │   ├── main.tsx                         # React entry point
+│   │   └── index.css                        # Global styles
 │   │
-│   ├── .env                           # Frontend env variables (not committed)
-│   ├── .env.example                   # Frontend env template
+│   ├── .env                                 # Frontend env variables (not committed)
+│   ├── .env.example                         # Frontend env template
+│   ├── .gitignore
+│   ├── components.json
+│   ├── eslint.config.js
 │   ├── index.html
+│   ├── package-lock.json
 │   ├── package.json
+│   ├── postcss.config.js
 │   ├── tailwind.config.ts
+│   ├── tsconfig.app.json
 │   ├── tsconfig.json
+│   ├── tsconfig.node.json
 │   └── vite.config.ts
 │
 └── README.md
