@@ -1,0 +1,793 @@
+<div align="center">
+
+# 🎓 EvalueX
+
+### AI-Powered University Examination Evaluation System
+
+[![React](https://img.shields.io/badge/React-18.x-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Express](https://img.shields.io/badge/Express-4.x-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.x-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-5.x-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Google Gemini](https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+<br/>
+
+> **EvalueX** is an enterprise-grade, AI-powered examination evaluation platform designed to automate, standardize, and accelerate university-level grading workflows using state-of-the-art Large Language Models (LLMs).
+
+<br/>
+
+<!-- DEMO PLACEHOLDER -->
+<!-- ![EvalueX Demo](./assets/demo.gif) -->
+
+</div>
+
+---
+
+## 📋 Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Tech Stack](#-tech-stack)
+- [Folder Structure](#-folder-structure)
+- [Installation & Setup](#-installation--setup)
+- [Environment Variables](#-environment-variables)
+- [Backend Setup](#-backend-setup)
+- [Frontend Setup](#-frontend-setup)
+- [Running the Project](#-running-the-project)
+- [Docker Setup](#-docker-setup)
+- [API Workflow](#-api-workflow)
+- [AI Evaluation Pipeline](#-ai-evaluation-pipeline)
+- [Supabase Integration](#-supabase-integration)
+- [Security](#-security)
+- [Troubleshooting](#-troubleshooting)
+- [FAQ](#-faq)
+- [Future Scope](#-future-scope)
+- [Screenshots](#-screenshots)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Author](#-author)
+
+---
+
+## 🌟 Overview
+
+**EvalueX** addresses one of the most time-consuming challenges in academia — **manual examination grading**. By leveraging cutting-edge LLMs (Google Gemini & OpenAI GPT), EvalueX automates the entire evaluation lifecycle from question paper parsing to per-question grading, feedback generation, and score aggregation.
+
+The platform is built on a **modular, scalable, and production-ready architecture** with a clear separation between the React/TypeScript frontend and the Node.js/Express backend, connected via REST APIs and powered by Supabase as the cloud database layer.
+
+### Why EvalueX?
+
+| Problem | EvalueX Solution |
+|---|---|
+| Manual grading takes hours per exam | AI grades in minutes with per-question breakdown |
+| Inconsistent scoring across evaluators | Standardized rubric-based AI evaluation |
+| No structured feedback for students | Detailed AI-generated feedback per question |
+| Hard to track class-wide performance | Built-in analytics and results dashboard |
+| Difficult to manage multiple classes | Class and assignment management system |
+
+---
+
+## ✨ Key Features
+
+- 🤖 **AI-Powered Grading** — Uses Google Gemini and OpenAI GPT to evaluate handwritten and typed answers
+- 📄 **Question Paper Parsing** — Automatically extracts and structures questions from uploaded exam PDFs/images
+- 📝 **Model Answer Extraction** — Parses model answer sheets and rubrics for reference-based grading
+- 🗂️ **Question-Centric Pipeline (QCP)** — Grades each question independently for granular scoring
+- 📊 **Score Aggregation** — Computes final scores with optional question policy support
+- 🔁 **Re-grading Support** — Educators can trigger re-grading for individual questions
+- 📈 **Analytics Dashboard** — Class-wide performance tracking and visual insights
+- 🏫 **Class & Assignment Management** — Organize students, classes, and assignments
+- 🔐 **Supabase Auth** — Secure email/password and Google OAuth authentication
+- 📑 **Feedback PDF Generation** — Auto-generates downloadable feedback reports per student
+- 🐳 **Docker-Ready Backend** — Production-ready containerized backend deployment
+- 🌙 **Dark/Light Theme** — Full theme support with persistent preference
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TB
+    subgraph Client["🖥️ Frontend (React + TypeScript)"]
+        UI[Pages & Components]
+        AC[API Client]
+        SB_CLIENT[Supabase Client]
+    end
+
+    subgraph Server["⚙️ Backend (Node.js + Express)"]
+        IDX[index.js - Entry Point]
+        subgraph Routes["Routes"]
+            R1[/parse-question-paper]
+            R2[/extract-answers]
+            R3[/grade-submission]
+            R4[/grade-question]
+            R5[/aggregate-scores]
+            R6[/upload-feedback-pdf]
+        end
+        subgraph Services["Services"]
+            GEM[Gemini Service]
+            OAI[OpenAI Service]
+            SBC[Supabase Client]
+        end
+        subgraph Utils["Utils"]
+            PDF[PDF Parser]
+            DB[DB Helpers]
+            AGG[Score Aggregator]
+            SAN[Sanitizer]
+        end
+    end
+
+    subgraph DB["☁️ Supabase (Cloud)"]
+        AUTH[Auth]
+        PGDB[PostgreSQL DB]
+        STORE[Storage]
+    end
+
+    subgraph AI["🤖 AI Layer"]
+        GEMINI[Google Gemini 2.5 Flash]
+        GPT[OpenAI GPT-4]
+    end
+
+    UI --> AC
+    UI --> SB_CLIENT
+    AC -->|REST API| IDX
+    IDX --> Routes
+    Routes --> Services
+    Services --> GEM
+    Services --> OAI
+    Services --> SBC
+    GEM --> GEMINI
+    OAI --> GPT
+    SBC --> PGDB
+    SBC --> STORE
+    SB_CLIENT --> AUTH
+    SB_CLIENT --> PGDB
+```
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+| Technology | Version | Purpose |
+|---|---|---|
+| React.js | 18.x | UI Component Framework |
+| TypeScript | 5.x | Type-safe JavaScript |
+| Vite | 5.x | Build Tool & Dev Server |
+| Tailwind CSS | 3.x | Utility-first Styling |
+| Shadcn/UI | Latest | Accessible UI Components |
+| React Router DOM | 6.x | Client-side Routing |
+| TanStack Query | 5.x | Server State Management |
+| Framer Motion | 12.x | Animations |
+| Supabase JS | 2.x | Auth & Database Client |
+| jsPDF | 4.x | PDF Generation |
+| Recharts | 2.x | Data Visualization |
+
+### Backend
+
+| Technology | Version | Purpose |
+|---|---|---|
+| Node.js | 20.x | Runtime Environment |
+| Express.js | 4.x | REST API Framework |
+| Supabase JS | 2.x | Database & Storage |
+| Google Generative AI | 0.21.x | Gemini LLM Integration |
+| OpenAI SDK | 4.x | GPT Integration |
+| Multer | 1.x | File Upload Handling |
+| pdf-parse | 1.x | PDF Text Extraction |
+| pdfjs-dist | 5.x | PDF Processing |
+| dotenv | 16.x | Environment Config |
+| cors | 2.x | Cross-Origin Requests |
+
+### Infrastructure
+
+| Technology | Purpose |
+|---|---|
+| Supabase | PostgreSQL DB, Auth, Storage |
+| Docker | Backend Containerization |
+| Google Gemini 2.5 Flash | OCR, Layout Detection, Answer Extraction |
+| OpenAI GPT-4 | Answer Grading & Feedback |
+
+---
+
+## 📁 Folder Structure
+
+```
+EvalueX/
+│
+├── 📂 backend/                        # Node.js + Express REST API Server
+│   ├── 📂 routes/                     # API Route Handlers
+│   │   ├── aggregateScores.js         # Score computation & aggregation
+│   │   ├── extractAnswers.js          # 2-pass answer extraction pipeline
+│   │   ├── extractModelAnswersPdf.js  # Model answer PDF extraction
+│   │   ├── extractQuestionsPdf.js     # Question paper PDF extraction
+│   │   ├── extractText.js             # OCR text extraction (backward compat)
+│   │   ├── gradeQuestion.js           # Single question re-grading
+│   │   ├── gradeSubmission.js         # Full submission grading pipeline
+│   │   ├── parseModelAnswers.js       # Model answer parsing
+│   │   ├── parseQuestionPaper.js      # Question paper structure parsing
+│   │   ├── parseRubricPdf.js          # Rubric PDF parsing
+│   │   └── uploadFeedbackPdf.js       # Feedback PDF upload to Supabase
+│   │
+│   ├── 📂 services/                   # External Service Integrations
+│   │   ├── geminiService.js           # Google Gemini AI functions
+│   │   ├── openaiService.js           # OpenAI GPT grading functions
+│   │   └── supabaseClient.js          # Supabase service-role client
+│   │
+│   ├── 📂 supabase/                   # Database Schema
+│   │   └── schema.sql                 # Full database schema (run once on new Supabase project)
+│   │
+│   ├── 📂 utils/                      # Shared Utility Functions
+│   │   ├── dbHelpers.js               # Supabase query helpers
+│   │   ├── geminiErrors.js            # Gemini error handling
+│   │   ├── multerUpload.js            # File upload configuration
+│   │   ├── optionalQuestionsRules.js  # Optional question policy logic
+│   │   ├── pdfParser.js               # PDF parsing utilities
+│   │   ├── sanitize.js                # Text sanitization
+│   │   └── scoreAggregator.js         # Score calculation logic
+│   │
+│   ├── .dockerignore
+│   ├── .env                           # Environment variables (not committed)
+│   ├── .env.example                   # Environment variable template
+│   ├── .gitignore
+│   ├── Dockerfile                     # Docker container config
+│   ├── index.js                       # Express app entry point
+│   ├── package-lock.json
+│   └── package.json
+│
+├── 📂 frontend/                       # React + TypeScript SPA
+│   ├── 📂 public/                     # Static assets
+│   │
+│   ├── 📂 src/
+│   │   ├── 📂 components/
+│   │   │   ├── 📂 layout/             # Header, Sidebar, NavLink
+│   │   │   ├── 📂 marketing/          # Landing page components
+│   │   │   └── 📂 ui/                 # Shadcn/Radix UI components
+│   │   │
+│   │   ├── 📂 hooks/                  # Custom React hooks
+│   │   │   ├── useAuth.tsx            # Authentication hook
+│   │   │   └── useTheme.tsx           # Theme management hook
+│   │   │
+│   │   ├── 📂 integrations/
+│   │   │   ├── api-client.ts          # Backend REST API client
+│   │   │   └── 📂 supabase/           # Supabase client & types
+│   │   │
+│   │   ├── 📂 pages/
+│   │   │   ├── 📂 auth/               # Login, Signup
+│   │   │   ├── 📂 dashboard/          # Dashboard, Classes, Assignments, Results, Analytics
+│   │   │   ├── 📂 grading/            # Upload, GradingReview, Rubrics
+│   │   │   ├── 📂 marketing/          # Landing page
+│   │   │   └── 📂 settings/           # User settings
+│   │   │
+│   │   ├── 📂 utils/                  # Frontend utilities
+│   │   ├── App.tsx                    # Root component & routing
+│   │   ├── main.tsx                   # React entry point
+│   │   └── index.css                  # Global styles
+│   │
+│   ├── .env                           # Frontend env variables (not committed)
+│   ├── .env.example                   # Frontend env template
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.ts
+│   ├── tsconfig.json
+│   └── vite.config.ts
+│
+└── README.md
+```
+
+---
+
+## 🚀 Installation & Setup
+
+### Prerequisites
+
+Ensure the following are installed on your system:
+
+| Tool | Version | Download |
+|---|---|---|
+| Node.js | >= 18.x | [nodejs.org](https://nodejs.org/) |
+| npm | >= 9.x | Included with Node.js |
+| Git | Latest | [git-scm.com](https://git-scm.com/) |
+| Docker (optional) | Latest | [docker.com](https://www.docker.com/) |
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/your-username/EvalueX.git
+cd EvalueX
+```
+
+---
+
+## 🔐 Environment Variables
+
+### Backend — `backend/.env`
+
+Create a `.env` file inside the `backend/` folder:
+
+```env
+# Server
+PORT=3001
+
+# AI API Keys
+GEMINI_API_KEY=your_google_gemini_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+# Supabase
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_SERVICE_KEY=your_supabase_service_role_key
+
+# Optional
+FRONTEND_URL=http://localhost:8080
+```
+
+| Variable | Description | Where to Get |
+|---|---|---|
+| `GEMINI_API_KEY` | Google Gemini API key | [aistudio.google.com](https://aistudio.google.com) |
+| `OPENAI_API_KEY` | OpenAI API key | [platform.openai.com](https://platform.openai.com/api-keys) |
+| `SUPABASE_URL` | Supabase project URL | Supabase Dashboard → Settings → API |
+| `SUPABASE_SERVICE_KEY` | Supabase service role key | Supabase Dashboard → Settings → API |
+
+### Frontend — `frontend/.env`
+
+Create a `.env` file inside the `frontend/` folder:
+
+```env
+VITE_API_URL=http://localhost:3001
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_public_key
+```
+
+| Variable | Description | Where to Get |
+|---|---|---|
+| `VITE_API_URL` | Backend server URL | Local: `http://localhost:3001` |
+| `VITE_SUPABASE_URL` | Supabase project URL | Supabase Dashboard → Settings → API |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key | Supabase Dashboard → Settings → API |
+
+> ⚠️ **Never commit `.env` files to version control. Both folders have `.gitignore` configured to exclude them.**
+
+---
+
+## ⚙️ Backend Setup
+
+```bash
+# Navigate to backend
+cd backend
+
+# Install dependencies
+npm install
+
+# Start development server (with nodemon)
+npm run dev
+
+# Start production server
+npm start
+```
+
+The backend will start at: **`http://localhost:3001`**
+
+### Health Check
+
+```bash
+curl http://localhost:3001/api/health
+```
+
+Expected response:
+```json
+{
+  "status": "ok",
+  "timestamp": "2025-01-01T00:00:00.000Z",
+  "services": {
+    "gemini": true,
+    "openai": true,
+    "supabase": true
+  }
+}
+```
+
+---
+
+## 🖥️ Frontend Setup
+
+```bash
+# Navigate to frontend
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+The frontend will start at: **`http://localhost:8080`**
+
+---
+
+## ▶️ Running the Project
+
+Run both servers simultaneously in separate terminals:
+
+**Terminal 1 — Backend:**
+```bash
+cd backend && npm run dev
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd frontend && npm run dev
+```
+
+Then open **[http://localhost:8080](http://localhost:8080)** in your browser.
+
+---
+
+## 🐳 Docker Setup
+
+### Build & Run Backend with Docker
+
+```bash
+cd backend
+
+# Build the Docker image
+docker build -t evaluex-backend .
+
+# Run the container
+docker run -p 3001:3001 --env-file .env evaluex-backend
+```
+
+### Docker Compose (Full Stack)
+
+Create a `docker-compose.yml` at the root:
+
+```yaml
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    env_file:
+      - ./frontend/.env
+    depends_on:
+      - backend
+    restart: unless-stopped
+```
+
+```bash
+# Start all services
+docker-compose up --build
+
+# Stop all services
+docker-compose down
+```
+
+---
+
+## 🔌 API Workflow
+
+```mermaid
+sequenceDiagram
+    participant FE as Frontend (React)
+    participant BE as Backend (Express)
+    participant GEM as Gemini AI
+    participant GPT as OpenAI GPT
+    participant DB as Supabase DB
+
+    FE->>BE: POST /api/parse-question-paper (images)
+    BE->>GEM: Extract question structure
+    GEM-->>BE: Structured questions JSON
+    BE->>DB: Store exam_questions
+    BE-->>FE: Questions parsed ✅
+
+    FE->>BE: POST /api/extract-answers (answer sheet images)
+    BE->>GEM: Pass 2A — Layout detection
+    GEM-->>BE: Answer map (question → pages)
+    BE->>GEM: Pass 2B — Extract answer text per question
+    GEM-->>BE: Extracted answer texts
+    BE->>DB: Store submission_answers
+    BE-->>FE: Answers extracted ✅
+
+    FE->>BE: POST /api/grade-submission
+    BE->>DB: Fetch questions + rubrics + model answers
+    BE->>GPT: Grade each question (batched)
+    GPT-->>BE: Score + feedback per question
+    BE->>DB: Store question_grades
+    BE->>BE: Aggregate final score
+    BE->>DB: Update submission score
+    BE-->>FE: Grading complete ✅
+
+    FE->>BE: POST /api/upload-feedback-pdf
+    BE->>DB: Store PDF in Supabase Storage
+    BE-->>FE: PDF URL returned ✅
+```
+
+### Available API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/health` | Server health check |
+| `POST` | `/api/parse-question-paper` | Parse exam question paper from images |
+| `POST` | `/api/parse-model-answers` | Parse model answer sheet |
+| `POST` | `/api/extract-questions-pdf` | Extract questions from PDF |
+| `POST` | `/api/extract-model-answers-pdf` | Extract model answers from PDF |
+| `POST` | `/api/parse-rubric-pdf` | Parse grading rubric from PDF |
+| `POST` | `/api/extract-answers` | Extract student answers (2-pass pipeline) |
+| `POST` | `/api/grade-submission` | Grade full student submission |
+| `POST` | `/api/grade-question` | Re-grade a single question |
+| `POST` | `/api/aggregate-scores` | Compute final aggregated score |
+| `GET` | `/api/aggregate-scores/:id` | Fetch grade breakdown for submission |
+| `POST` | `/api/extract-text` | OCR text extraction (backward compat) |
+| `POST` | `/api/upload-feedback-pdf` | Upload feedback PDF to storage |
+
+---
+
+## 🤖 AI Evaluation Pipeline
+
+EvalueX uses a **3-stage Question-Centric Pipeline (QCP)** for accurate, granular evaluation:
+
+```mermaid
+flowchart TD
+    A[📄 Upload Exam Paper] --> B[Stage 1: Question Parsing]
+    B --> B1[Gemini extracts flat question list]
+    B1 --> B2[Labels preserved exactly as printed]
+    B2 --> B3[Stored in exam_questions table]
+
+    C[📝 Upload Answer Sheet] --> D[Stage 2: Answer Extraction]
+    D --> D1[Pass 2A: Layout Detection]
+    D1 --> D2[Gemini maps questions to pages]
+    D2 --> D3[Pass 2B: Targeted Extraction]
+    D3 --> D4[Gemini extracts text per question]
+    D4 --> D5[Stored in submission_answers table]
+
+    E[⚡ Trigger Grading] --> F[Stage 3: AI Grading]
+    F --> F1[Fetch questions + rubric + model answers]
+    F1 --> F2[GPT-4 grades each question]
+    F2 --> F3[Score + detailed feedback generated]
+    F3 --> F4[Optional question rules applied]
+    F4 --> F5[Final score aggregated]
+    F5 --> F6[Results stored in Supabase]
+    F6 --> G[📊 Results & Feedback Available]
+```
+
+### AI Models Used
+
+| Stage | Model | Task |
+|---|---|---|
+| Question Parsing | Gemini 2.5 Flash | Extract structured question list from images |
+| Layout Detection | Gemini 2.5 Flash | Map answer pages to question labels |
+| Answer Extraction | Gemini 2.5 Flash | Extract handwritten answer text per question |
+| Grading & Feedback | OpenAI GPT-4 | Score answers against rubric + model answers |
+
+---
+
+## 🗄️ Supabase Integration
+
+EvalueX uses **Supabase** as its cloud backend-as-a-service layer providing:
+
+### Database Tables
+
+| Table | Description |
+|---|---|
+| `profiles` | Educator profiles linked to Supabase Auth users |
+| `classes` | Class/course management |
+| `assignments` | Exam assignments per class |
+| `exam_questions` | Parsed questions per assignment |
+| `exam_rubrics` | Grading rubrics per assignment |
+| `model_answers` | Model answers per question |
+| `submissions` | Student answer sheet submissions |
+| `submission_answers` | Extracted answers per question per submission |
+| `question_grades` | AI-generated grades per question per submission |
+
+### Supabase Features Used
+
+- **Authentication** — Email/password + Google OAuth via Supabase Auth
+- **PostgreSQL** — Relational data storage with Row Level Security (RLS)
+- **Storage** — Feedback PDF storage in `feedback-reports` bucket
+- **Real-time** — Live grading status updates
+
+### Database Setup (Required for every new clone)
+
+> ⚠️ **This step is mandatory.** Without it, the backend will fail with database errors.
+
+1. Go to your **Supabase Dashboard → SQL Editor**
+2. Copy the entire contents of `backend/supabase/schema.sql`
+3. Paste it into the SQL Editor and click **Run**
+
+This single file creates everything:
+- ✅ All tables (`profiles`, `assignments`, `submissions`, `exam_questions`, `exam_rubrics`, `model_answers`, `submission_answers`, `question_grades`)
+- ✅ Row Level Security (RLS) policies
+- ✅ Performance indexes
+- ✅ `feedback-reports` storage bucket
+- ✅ Auth triggers (auto-create profile on signup)
+
+> 💡 **No migrations folder needed.** `schema.sql` is the single source of truth and contains the complete, up-to-date database schema. Just run it once on any fresh Supabase project.
+
+---
+
+## 🔒 Security
+
+- 🔑 **JWT Authentication** — All API calls include Bearer token from Supabase Auth
+- 🛡️ **Row Level Security (RLS)** — Supabase RLS policies restrict data access per user
+- 🔐 **Service Role Isolation** — Backend uses service-role key only server-side, never exposed to client
+- 🌐 **CORS Policy** — Strict origin whitelist on the Express server
+- 📦 **Environment Isolation** — All secrets stored in `.env` files, excluded from version control
+- 🧹 **Input Sanitization** — All extracted text is sanitized before storage and grading
+- 🚫 **No PII Exposure** — Student data is scoped per educator account
+
+---
+
+## 🔧 Troubleshooting
+
+### White Screen on Frontend
+
+**Cause:** Missing `frontend/.env` file.
+
+```bash
+# Create frontend/.env with your Supabase credentials
+cp frontend/.env.example frontend/.env
+# Then fill in your actual values
+```
+
+### Backend Crashes on Startup
+
+**Cause:** Missing required environment variables.
+
+```bash
+# Ensure all required vars are set in backend/.env
+GEMINI_API_KEY, OPENAI_API_KEY, SUPABASE_URL, SUPABASE_SERVICE_KEY
+```
+
+### Port 3001 Already in Use
+
+```bash
+# Windows
+netstat -ano | findstr :3001
+taskkill /PID <PID> /F
+
+# macOS/Linux
+lsof -ti:3001 | xargs kill -9
+```
+
+### Grading Returns "No extracted answers found"
+
+**Cause:** `/api/extract-answers` must be called before `/api/grade-submission`.
+
+Run the pipeline in order:
+1. `/api/parse-question-paper`
+2. `/api/extract-answers`
+3. `/api/grade-submission`
+
+### Gemini Rate Limit Errors
+
+**Cause:** Too many concurrent requests to Gemini API.
+
+The pipeline automatically retries with exponential backoff (8s, 16s). If persistent, check your Gemini API quota at [aistudio.google.com](https://aistudio.google.com).
+
+---
+
+## ❓ FAQ
+
+**Q: Can EvalueX grade handwritten answer sheets?**
+> Yes. Gemini 2.5 Flash performs OCR on scanned handwritten answer sheets and extracts text per question before grading.
+
+**Q: What file formats are supported for uploads?**
+> JPEG, PNG, and PDF formats are supported for question papers, model answers, and student answer sheets.
+
+**Q: Can educators override AI grades?**
+> Yes. The GradingReview page allows educators to review, adjust, and approve all AI-generated scores before finalizing.
+
+**Q: How are optional questions handled?**
+> EvalueX supports configurable optional question policies (e.g., "Answer Q.7 OR Q.8"). The system detects which questions were attempted and applies the policy during score aggregation.
+
+**Q: Is student data secure?**
+> All data is scoped per educator account using Supabase Row Level Security. No cross-account data access is possible.
+
+**Q: Can I self-host EvalueX?**
+> Yes. The backend is Docker-ready. The frontend can be deployed to any static hosting (Vercel, Netlify). Supabase can be self-hosted as well.
+
+---
+
+## 🔮 Future Scope
+
+- [ ] 🧑‍🎓 **Student Portal** — Students can view their graded results and AI feedback directly
+- [ ] 📱 **Mobile App** — React Native companion app for on-the-go grading
+- [ ] 🌍 **Multi-language Support** — Evaluate answers in regional languages
+- [ ] 🔗 **LMS Integration** — Connect with Moodle, Canvas, and Google Classroom
+- [ ] 📊 **Advanced Analytics** — Cohort analysis, question difficulty metrics, grade distributions
+- [ ] 🧠 **Custom Fine-tuned Models** — Domain-specific LLMs for specialized subjects
+- [ ] 🔄 **Bulk Upload** — Process entire class submissions in one batch
+- [ ] 📧 **Email Notifications** — Automated result delivery to students
+- [ ] 🏆 **Plagiarism Detection** — AI-based similarity detection across submissions
+- [ ] 🔌 **Webhook Support** — Real-time grading status notifications
+
+---
+
+## 📸 Screenshots
+
+> 🚧 Screenshots will be added after UI finalization.
+
+| Page | Preview |
+|---|---|
+| Landing Page | `[Screenshot Placeholder]` |
+| Dashboard | `[Screenshot Placeholder]` |
+| Upload Exam | `[Screenshot Placeholder]` |
+| Grading Review | `[Screenshot Placeholder]` |
+| Analytics | `[Screenshot Placeholder]` |
+| Results | `[Screenshot Placeholder]` |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please follow these steps:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feature/your-feature-name`
+3. **Commit** your changes: `git commit -m "feat: add your feature"`
+4. **Push** to the branch: `git push origin feature/your-feature-name`
+5. **Open** a Pull Request
+
+### Commit Convention
+
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+```
+feat:     New feature
+fix:      Bug fix
+docs:     Documentation changes
+style:    Formatting changes
+refactor: Code restructuring
+test:     Adding tests
+chore:    Maintenance tasks
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 Author
+
+<div align="center">
+
+**Built with ❤️ for the academic community**
+
+[![GitHub](https://img.shields.io/badge/GitHub-your--username-181717?style=for-the-badge&logo=github)](https://github.com/your-username)
+
+*EvalueX — Redefining Examination Evaluation with Artificial Intelligence*
+
+</div>
+
+---
+
+<div align="center">
+
+⭐ **If EvalueX helped you, please consider giving it a star!** ⭐
+
+</div>
