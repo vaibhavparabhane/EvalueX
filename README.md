@@ -3,6 +3,11 @@
 # 🎓 EvalueX
 
 ### AI-Powered University Examination Evaluation System
+
+</div>
+
+---
+
 ## 🌟 Overview
 
 **EvalueX** addresses one of the most time-consuming challenges in academia — **manual examination grading**. By leveraging cutting-edge LLMs (Google Gemini & OpenAI GPT), EvalueX automates the entire evaluation lifecycle from question paper parsing to per-question grading, feedback generation, and score aggregation.
@@ -245,7 +250,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_public_key
 | `VITE_SUPABASE_URL` | Supabase project URL | Supabase Dashboard → Settings → API |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase anon/public key | Supabase Dashboard → Settings → API |
 
-> 
+> ⚠️ **Never commit `.env` files to version control.** Both `.env` files are listed in their respective `.gitignore`.
 
 ---
 
@@ -274,6 +279,7 @@ curl http://localhost:3001/api/health
 ```
 
 Expected response:
+
 ```json
 {
   "status": "ok",
@@ -316,11 +322,13 @@ The frontend will start at: **`http://localhost:8080`**
 Run both servers simultaneously in separate terminals:
 
 **Terminal 1 — Backend:**
+
 ```bash
 cd backend && npm run dev
 ```
 
 **Terminal 2 — Frontend:**
+
 ```bash
 cd frontend && npm run dev
 ```
@@ -502,7 +510,7 @@ EvalueX uses **Supabase** as its cloud backend-as-a-service layer providing:
 - **Storage** — Feedback PDF storage in `feedback-reports` bucket
 - **Real-time** — Live grading status updates
 
-### Database Setup (Required for every new clone)
+### Database Setup
 
 > ⚠️ **This step is mandatory.** Without it, the backend will fail with database errors.
 
@@ -511,6 +519,7 @@ EvalueX uses **Supabase** as its cloud backend-as-a-service layer providing:
 3. Paste it into the SQL Editor and click **Run**
 
 This single file creates everything:
+
 - ✅ All tables (`profiles`, `assignments`, `submissions`, `exam_questions`, `exam_rubrics`, `model_answers`, `submission_answers`, `question_grades`)
 - ✅ Row Level Security (RLS) policies
 - ✅ Performance indexes
@@ -530,6 +539,7 @@ This single file creates everything:
 - 🚫 **No PII Exposure** — Student data is scoped per educator account
 
 ---
+
 ## 🔮 Future Scope
 
 - [ ] 🧑‍🎓 **Student Portal** — Students can view their graded results and AI feedback directly
