@@ -2,7 +2,7 @@
 
 # 🎓 EvalueX
 
-### AI-Powered University Examination Evaluation System
+### EvalueX: A Smart LLM-Based Grading System
 
 </div>
 
